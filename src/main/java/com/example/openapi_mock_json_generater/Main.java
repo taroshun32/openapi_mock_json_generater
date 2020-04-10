@@ -8,7 +8,6 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -25,13 +24,13 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main(String[] args) {
         // 引数からファイル名を取得
-        String swaggerFileName = "swagger.yaml";
+        String openapiFileName = "openapi.yaml";
         String outputDirName = "mock-json";
-        Boolean noEmptyFile = false;
+        boolean noEmptyFile = false;
         List<String> arguments = Arrays.asList(args);
-        int swaggerIndex = arguments.indexOf("-i");
-        if (swaggerIndex >= 0) {
-            swaggerFileName = args[swaggerIndex + 1];
+        int openapiIndex = arguments.indexOf("-i");
+        if (openapiIndex >= 0) {
+            openapiFileName = args[openapiIndex + 1];
         }
 
         int outputIndex = arguments.indexOf("-o");
@@ -43,37 +42,34 @@ public class Main {
             noEmptyFile = true;
         }
 
-        OpenAPI swagger = new OpenAPIV3Parser().read(swaggerFileName);
-        Components components = swagger.getComponents();
+        OpenAPI openapi = new OpenAPIV3Parser().read(openapiFileName);
+        Components components = openapi.getComponents();
         Map<String, Schema> schemas = components.getSchemas();
 
         String finalOutputDirName = outputDirName;
         Boolean finalNoEmptyFile = noEmptyFile;
-        swagger.getPaths().entrySet()
-            .stream()
-            .forEach(path -> {
-                PathItem item = path.getValue();
+        openapi.getPaths().forEach((key, item) -> {
 
-                Operation get = item.getGet();
-                if (get != null) {
-                    Main.write(get.getResponses(), schemas, "get", path.getKey(), finalOutputDirName, finalNoEmptyFile);
-                }
+            Operation get = item.getGet();
+            if (get != null) {
+                Main.write(get.getResponses(), schemas, "get", key, finalOutputDirName, finalNoEmptyFile);
+            }
 
-                Operation post = item.getPost();
-                if (post != null) {
-                    Main.write(post.getResponses(), schemas, "post", path.getKey(), finalOutputDirName, finalNoEmptyFile);
-                }
+            Operation post = item.getPost();
+            if (post != null) {
+                Main.write(post.getResponses(), schemas, "post", key, finalOutputDirName, finalNoEmptyFile);
+            }
 
-                Operation put = item.getPut();
-                if (put != null) {
-                    Main.write(put.getResponses(), schemas, "put", path.getKey(), finalOutputDirName, finalNoEmptyFile);
-                }
+            Operation put = item.getPut();
+            if (put != null) {
+                Main.write(put.getResponses(), schemas, "put", key, finalOutputDirName, finalNoEmptyFile);
+            }
 
-                Operation delete = item.getDelete();
-                if (delete != null) {
-                    Main.write(delete.getResponses(), schemas, "delete", path.getKey(), finalOutputDirName, finalNoEmptyFile);
-                }
-            });
+            Operation delete = item.getDelete();
+            if (delete != null) {
+                Main.write(delete.getResponses(), schemas, "delete", key, finalOutputDirName, finalNoEmptyFile);
+            }
+        });
     }
 
     // レスポンスの一覧を書き込み
