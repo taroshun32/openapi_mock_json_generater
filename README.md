@@ -1,15 +1,15 @@
 # openapi-mock-json-generater
-this project generate sample json from openapi.yaml 
+openapi.yaml からJSONレスポンスのサンプルファイルを生成する
 
-## usage
+## タスク一覧
 
-### run
+### 実行
 
 ```
 ./gradlew run
 ```
 
-### create jar
+### ビルド(jarファイル生成)
 
 ```
 ./gradlew shadowJar
@@ -21,9 +21,10 @@ java -jar build/libs/openapi-mock-json-generater-1.0-SNAPSHOT-all.jar \
   -o {{output_directory}}
 ```
 
-If you do not need an empty file, include "--noEmptyFIle" as an argument.
+APIのレスポンスが無い場合、空ファイルを生成  
+必要ない場合は、引数に「--noEmptyFIle」を含める
 
-## reference
+## 参考
 
 ・https://stackoverflow.com/questions/41408768/how-to-generate-json-examples-from-openapi-swagger-model-definition  
 ・https://github.com/swagger-api/swagger-inflector/
