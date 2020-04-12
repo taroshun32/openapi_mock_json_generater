@@ -1,5 +1,5 @@
 # openapi-mock-json-generater
-openapi.yamlからmockサーバ用のサンプルJSONを生成する
+openapi.yamlからmock-serverのmock-jsonを生成する
 
 ## タスク一覧
 
