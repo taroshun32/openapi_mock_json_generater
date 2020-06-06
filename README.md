@@ -27,4 +27,4 @@ APIのレスポンスが無い場合、空ファイルを生成
 ## 参考
 
 ・https://stackoverflow.com/questions/41408768/how-to-generate-json-examples-from-openapi-swagger-model-definition  
-・https://github.com/swagger-api/swagger-inflector/
+・https://github.com/swagger-api/swagger-inflector
